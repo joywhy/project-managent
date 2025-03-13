@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SideBar from './components/SideBar';
 import NoProject from './components/NoProject';
+import ProjectForm from './components/ProjectForm';
 function App() {
   const [projects, setProject] = useState({ projects: [], isAdding: -1 });
   let isFirst = false;
@@ -8,7 +9,8 @@ function App() {
     isFirst = true;
   }
 
-  function handleClick() {
+  function handleCreate() {
+    console.log('create');
     setProject((prevProject) => {
       return {
         projects: [...prevProject.projects],
@@ -30,35 +32,23 @@ function App() {
       return { projects: [...prevProject.projects, newProject], isAdding: -1 };
     });
   }
+  function handleSelect(index) {
+    console.log('select', index);
+    setProject((prevProject) => {
+      return { projects: [...prevProject.projects], isAdding: index };
+    });
+  }
   return (
     <div className="flex w-full h-screen">
-      <SideBar handleClick={handleClick} />
-      {projects.isAdding === -1 && <NoProject handleClick={handleClick} />}
-      {projects.isAdding > -1 && (
-        <form
-          onSubmit={handleSubmit}
-          className="w-fit h-fit flex flex-col m-auto items-center justify-center p-10  border border-red-700 text-black"
-        >
-          <div className="flex justify-end w-full">
-            <button onClick={handleCanel} className="p-3 rounded  text-black">
-              canel
-            </button>
-            <button type="submit">save</button>
-          </div>
-
-          <label htmlFor="title" id="title">
-            title
-          </label>
-          <input type="text" name="title" className="bg-slate-300" />
-          <label htmlFor="description" id="description">
-            description
-          </label>
-          <textarea name="description" className="bg-slate-300"></textarea>
-          <label htmlFor="DUE DATE" id="DUE">
-            DUE DATE
-          </label>
-          <input type="date" name="DUE" className="bg-slate-300" />
-        </form>
+      <SideBar
+        handleClick={handleCreate}
+        projects={projects.projects}
+        isActiveIndex={projects.isAdding}
+        handleSelect={handleSelect}
+      />
+      {projects.isAdding === -1 && <NoProject onCreate={handleCreate} />}
+      {projects.isAdding === projects.projects.length && (
+        <ProjectForm handleSubmit={handleSubmit} handleCanel={handleCanel} />
       )}
     </div>
   );
