@@ -19,11 +19,11 @@ function SideBar({ onCreate, projects, isActiveIndex, handleSelect }) {
   }
 
   return (
-    <aside className="w-1/4 bg-slate-800 text-white p-5">
-      <h1>project</h1>
+    <aside className="w-1/3 px-5 py-16 bg-stone-900 text-white md:w-72 rounded-r-2xl">
+      <h2 className="mb-8 font-bold uppercase md:text-xl">project</h2>
       <button
         onClick={onCreate}
-        className="p-3 bg-black text-white rounded mt-10"
+        className="px-4 py-2 text-xs md:text-base bg-stone-800 text-white rounded"
       >
         add project
       </button>

@@ -5,10 +5,6 @@ import ProjectForm from './components/ProjectForm';
 import Task from './components/Task';
 function App() {
   const [projects, setProject] = useState({ projects: [], isAdding: -1 });
-  let isFirst = false;
-  if (projects.projects?.length === 0) {
-    isFirst = true;
-  }
 
   function handleCreate() {
     setProject((prevProject) => {
@@ -49,7 +45,7 @@ function App() {
     });
   }
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex my-8 gap-8 h-screen">
       <SideBar
         onCreate={handleCreate}
         projects={projects.projects}
