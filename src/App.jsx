@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SideBar from './components/SideBar';
 import NoProject from './components/NoProject';
 import ProjectForm from './components/ProjectForm';
+import Task from './components/Task';
 function App() {
   const [projects, setProject] = useState({ projects: [], isAdding: -1 });
   let isFirst = false;
@@ -10,7 +11,6 @@ function App() {
   }
 
   function handleCreate() {
-    console.log('create');
     setProject((prevProject) => {
       return {
         projects: [...prevProject.projects],
@@ -26,6 +26,7 @@ function App() {
       title: formData.get('title'),
       description: formData.get('description'),
       dueDate: formData.get('DUE'),
+      tasks: [],
     };
     setProject((prevProject) => {
       const updatedProjects = [...prevProject.projects];
@@ -33,15 +34,24 @@ function App() {
     });
   }
   function handleSelect(index) {
-    console.log('select', index);
     setProject((prevProject) => {
       return { projects: [...prevProject.projects], isAdding: index };
+    });
+  }
+  function handleTasks(e, text) {
+    e.preventDefault();
+    setProject((prevProject) => {
+      let undatedProjects = prevProject.projects.map((project) => {
+        return { ...project, tasks: [text, ...project.tasks] };
+      });
+
+      return { ...prevProject, projects: undatedProjects };
     });
   }
   return (
     <div className="flex w-full h-screen">
       <SideBar
-        handleClick={handleCreate}
+        onCreate={handleCreate}
         projects={projects.projects}
         isActiveIndex={projects.isAdding}
         handleSelect={handleSelect}
@@ -50,6 +60,10 @@ function App() {
       {projects.isAdding === projects.projects.length && (
         <ProjectForm handleSubmit={handleSubmit} handleCanel={handleCanel} />
       )}
+      {projects.isAdding !== -1 &&
+        projects.isAdding < projects.projects.length && (
+          <Task projects={projects} handleTasks={handleTasks} />
+        )}
     </div>
   );
 }
